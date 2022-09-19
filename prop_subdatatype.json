@@ -1,0 +1,6 @@
+{
+    "property_name": "field_float_precision",
+    "subdatatype": {"name": "float", "datatype_name": "physical", "simple_datatype": "float"},
+    "app": {"name": "sw"},
+    "datatype": {"name": "physical"}
+}

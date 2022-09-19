@@ -1,0 +1,15 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "GC_META_SIMPLE_DATATYPE.schema.json",
+    "title": "GC_META_SIMPLE_DATATYPE",
+    "description": "",
+    "type": "object",
+    "version": "1.0",
+    "oneOf": [
+        {"properties": {"name": {"const": "date"}}},
+        {"properties": {"name": {"const": "float"}}},
+        {"properties": {"name": {"const": "integer"}}},
+        {"properties": {"name": {"const": "string"}}}
+    ],
+    "required": ["name"]
+}

@@ -1,0 +1,13 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "GC_META_APP.schema.json",
+    "title": "GC_META_APP",
+    "description": "",
+    "type": "object",
+    "version": "1.0",
+    "oneOf": [
+        {"properties": {"name": {"const": "basis"}}},
+        {"properties": {"name": {"const": "sw"}}}
+    ],
+    "required": ["name"]
+}

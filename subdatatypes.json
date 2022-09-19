@@ -1,0 +1,34 @@
+
+{
+    "command": "SELECT JSON_OBJECT(datatype_name, name, simple_datatype) FROM gc_meta_subdatatype;",
+    "subdatatypes": [
+        {"datatype_name":"physical","name":"string","simple_datatype":"string"},
+        {"datatype_name":"physical","name":"integer","simple_datatype":"integer"},
+        {"datatype_name":"physical","name":"float","simple_datatype":"float"},
+        {"datatype_name":"physical","name":"date","simple_datatype":"date"},
+        {"datatype_name":"physical","name":"enumerator","simple_datatype":"string"},
+        {"datatype_name":"physical","name":"catalogue","simple_datatype":"string"},
+        {"datatype_name":"logical","name":"string","simple_datatype":"string"},
+        {"datatype_name":"logical","name":"integer","simple_datatype":"integer"},
+        {"datatype_name":"logical","name":"float","simple_datatype":"float"},
+        {"datatype_name":"logical","name":"method","simple_datatype":"string"},
+        {"datatype_name":"logical","name":"insert","simple_datatype":"string"},
+        {"datatype_name":"logical","name":"update","simple_datatype":"string"},
+        {"datatype_name":"logical","name":"delete","simple_datatype":"string"},
+        {"datatype_name":"geometry","name":"text","simple_datatype":null},
+        {"datatype_name":"geometry","name":"point","simple_datatype":null},
+        {"datatype_name":"geometry","name":"line","simple_datatype":null},
+        {"datatype_name":"geometry","name":"area","simple_datatype":null},
+        {"datatype_name":"geometry","name":"text_set","simple_datatype":null},
+        {"datatype_name":"geometry","name":"line_set","simple_datatype":null},
+        {"datatype_name":"geometry","name":"area_set","simple_datatype":null},
+        {"datatype_name":"geometry","name":"point_set","simple_datatype":null},
+        {"datatype_name":"join","name":"1_1","simple_datatype":"string"},
+        {"datatype_name":"join","name":"1_n","simple_datatype":"string"},
+        {"datatype_name":"join","name":"m_n","simple_datatype":"string"},
+        {"datatype_name":"geometry","name":"text_dataless","simple_datatype":null},
+        {"datatype_name":"geometry","name":"point_dataless","simple_datatype":null},
+        {"datatype_name":"geometry","name":"area_dataless","simple_datatype":null},
+        {"datatype_name":"geometry","name":"line_dataless","simple_datatype":null}
+    ]
+}

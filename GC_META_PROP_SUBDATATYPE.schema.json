@@ -1,0 +1,11 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "GC_META_PROP_SUBDATATYPE.schema.json",
+    "title": "GC_META_PROP_SUBDATATYPE",
+    "description": "",
+    "type": "object",
+    "version": "1.0",
+    "oneOf": [
+        {"properties": {"property_name": {"const": "field_float_precision"}, "subdatatype": {"$ref": "http://localhost:5000/GC_META_SUBDATATYPE", "properties": {"name": {"const": "float"}}}, "app": {"$ref": "http://localhost:5000/GC_META_APP", "properties": {"name": {"const": "sw"}}}, "datatype": {"$ref": "http://localhost:5000/GC_META_DATATYPE", "properties": {"name": {"const": "physical"}}}}}
+    ]
+}
