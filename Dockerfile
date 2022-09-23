@@ -16,7 +16,7 @@ WORKDIR /home/app
 COPY requirements.txt /home/app/
 RUN pip install -r requirements.txt
 
-COPY GC_META_SIMPLE_DATATYPE.schema.json /home/app/
+COPY /GC_META /home/app/
 
 COPY schema_service.py /home/app/ 
 

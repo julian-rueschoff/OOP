@@ -20,5 +20,9 @@ def gc_meta_datatype():
 def gc_meta_subdatatype():
     return send_file("./GC_META_SUBDATATYPE.schema.json")
 
+@app.route("/GC_META_PROP_SUBDATATYPE", methods=["GET"])
+def gc_meta_prop_subdatatype():
+    return send_file("./GC_META_PROP_SUBDATATYPE.schema.json")
+
 if __name__ == '__main__':
  app.run()

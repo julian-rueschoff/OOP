@@ -1,0 +1,15 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "GC_META_DATATYPE.schema.json",
+    "title": "GC_META_DATATYPE",
+    "description": "",
+    "type": "object",
+    "version": "1.0",
+    "oneOf": [
+        {"properties": {"name": {"const": "geometry"}}},
+        {"properties": {"name": {"const": "join"}}},
+        {"properties": {"name": {"const": "logical"}}},
+        {"properties": {"name": {"const": "physical"}}},
+    ],
+    "required": ["name"]
+}
