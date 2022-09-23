@@ -1,13 +1,13 @@
 import json
-from types import SimpleNamespace
+from GC_META import simple_datatype
 
-from simple_datatype import simple_datatype
 data = '{"name": "integer"}'
 x = json.loads(data)
 print(x["name"])
 y = simple_datatype(**x)
 print(type(y))
-print(y.test())
+print(y.getName())
+print(y.name)
 
 
 
