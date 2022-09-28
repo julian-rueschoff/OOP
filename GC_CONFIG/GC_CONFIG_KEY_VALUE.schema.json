@@ -1,0 +1,35 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "GC_META_SUBDATATYPE.schema.json",
+    "title": "GC_META_SUBDATATYPE",
+    "description": "",
+    "type": "object",
+    "version": "1.0",
+    "oneOf": [
+        {
+            "properties": {
+                "type": {
+                    "$ref": "http://localhost:5000/TYPE",
+                    "properties": {
+                        "name": {
+                            "const": ""
+                        }
+                    }
+                },
+                "property": {
+                    "$ref": "http://localhost:5000/PROPERTY",
+                    "properties": {
+                        "name" {
+                            "const": ""
+                        }
+                    }
+                },
+                "integer_value": {"const": },
+                "float_value": {"const": },
+                "date_value": {"const": },
+                "string_value": {"const": },
+            }
+        }
+    ],
+    "required": ["type", "property"]
+}

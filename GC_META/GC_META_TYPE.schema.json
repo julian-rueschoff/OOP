@@ -1,0 +1,19 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "GC_META_SUBDATATYPE.schema.json",
+    "title": "GC_META_SUBDATATYPE",
+    "description": "",
+    "type": "object",
+    "version": "1.0",
+    "oneOf": [
+        {"properties": {"name": {"const": "join"}}},
+        {"properties": {"name": {"const": "attribute"}}},
+        {"properties": {"name": {"const": "enumerator"}}},
+        {"properties": {"name": {"const": "theme"}}},
+        {"properties": {"name": {"const": "class"}}},
+        {"properties": {"name": {"const": "enumerator_value"}}},
+        {"properties": {"name": {"const": "visibility"}}},
+        {"properties": {"name": {"const": "pages"}}}
+    ],
+    "required": ["name"]
+}

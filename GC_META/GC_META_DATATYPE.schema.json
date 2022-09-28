@@ -6,10 +6,10 @@
     "type": "object",
     "version": "1.0",
     "oneOf": [
-        {"properties": {"name": {"const": "geometry"}}},
-        {"properties": {"name": {"const": "join"}}},
-        {"properties": {"name": {"const": "logical"}}},
-        {"properties": {"name": {"const": "physical"}}},
+        {"properties": {"name": {"const": "geometry"}, "position": {"const": 2}, "active": {"const": 1}}},
+        {"properties": {"name": {"const": "join"}, "position": {"const": 4}, "active": {"const": 1}}},
+        {"properties": {"name": {"const": "logical"}, "position": {"const": 3}, "active": {"const": 1}}},
+        {"properties": {"name": {"const": "physical"}, "position": {"const": 1}, "active": {"const": 1}}},
     ],
     "required": ["name"]
 }

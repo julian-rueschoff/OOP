@@ -1,7 +1,4 @@
 
-from email.policy import default
-
-
 def insert(property_name: list, subdatatype: list, app: list, datatype: list, default_string_value: list, default_integer_value: list, default_date_value: list, default_float_value: list):
     tmp = []
     with open("C:\OOP\GC_META\GC_META_PROP_SUBDATATYPE.schema.json", "r") as file:
