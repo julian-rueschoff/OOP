@@ -1,6 +1,6 @@
 {
-    "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "GC_META_DATATYPE.schema.json",
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "datatype",
     "title": "GC_META_DATATYPE",
     "description": "",
     "type": "object",
@@ -9,7 +9,7 @@
         {"properties": {"name": {"const": "geometry"}, "position": {"const": 2}, "active": {"const": 1}}},
         {"properties": {"name": {"const": "join"}, "position": {"const": 4}, "active": {"const": 1}}},
         {"properties": {"name": {"const": "logical"}, "position": {"const": 3}, "active": {"const": 1}}},
-        {"properties": {"name": {"const": "physical"}, "position": {"const": 1}, "active": {"const": 1}}},
+        {"properties": {"name": {"const": "physical"}, "position": {"const": 1}, "active": {"const": 1}}}
     ],
     "required": ["name"]
 }

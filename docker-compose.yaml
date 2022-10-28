@@ -1,9 +1,11 @@
-version: "3"
+version: '3'
 services:
-  schema_service:
-    container_name: schema_service
-    image: schema_service
-    build:
-      .
+  arangodb:
+    container_name: arangodb_oop
+    image: arangodb
+    environment:
+      - ARANGO_ROOT_PASSWORD=root
     ports:
-     - 5000:5000
+      - 8529:8529
+    volumes:
+      - /var/lib/arangodb:/var/lib/arangodb

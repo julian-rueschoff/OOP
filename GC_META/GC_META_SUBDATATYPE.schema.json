@@ -1,6 +1,6 @@
 {
-    "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "GC_META_SUBDATATYPE.schema.json",
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "subdatatype",
     "title": "GC_META_SUBDATATYPE",
     "description": "",
     "type": "object",
