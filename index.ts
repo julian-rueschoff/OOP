@@ -1,7 +1,10 @@
-import express, { Express, Request, Response } from 'express';
+import express, { Express, Request, response, Response } from 'express';
 import { Database } from 'arangojs';
 import Ajv from 'ajv';
 import * as fs from 'fs';
+import $RefParser from "@apidevtools/json-schema-ref-parser";
+import fetch from 'node-fetch';
+
 
 const db_name = "oop"
 const db_user = "root"
@@ -16,16 +19,50 @@ const schemas = [
   ["GC_META/GC_META_PROPERTY.schema.json", "property"],
   ["GC_META/GC_META_SIMPLE_DATATYPE.schema.json", "simple_datatype"],
   ["GC_META/GC_META_SUBDATATYPE.schema.json", "subdatatype"],
-  ["GC_META/GC_META_TYPE.schema.json", "type"]
+  ["GC_META/GC_META_TYPE.schema.json", "type"],
+  ["GC_META/test.schema.json", "test"]
 ]
 
 var keys: string[] = []
-const ajv = Ajv()
+const ajv = Ajv({
+  loadSchema: function (uri) {
+    return new Promise((resolve, reject) => {
+      fetch(uri).then((res) => {
+        return res.json()
+      }).then((res_json) => {
+        resolve(res_json)
+      })
+    });
+  },
+  logger: false
+})
+
+/*
+ajv.compileAsync(schema).then(function validate(schema: string | boolean | object, data: any) {
+  return ajv.validate(schema, data)
+})
+async function loadSchema(uri: string) {
+  const res = await request.json(uri)
+  if (res.statusCode >= 400) throw new Error("Loading error" + res.statusCode)
+  return res.body
+}
+*/
+
+//BUNDLE schemas ???
+
 //load schemas
 for(let filepath of schemas){
-  ajv.addSchema(JSON.parse(fs.readFileSync(filepath[0], "utf-8")), filepath[1])
-  //add keys
-  keys.push(filepath[1])
+  //$RefParser.dereference(filepath[0]).then((schema) => {
+    //ajv.addSchema(JSON.parse(fs.readFileSync(filepath[0], "utf-8")), filepath[1])
+    var schema = JSON.parse(fs.readFileSync(filepath[0], "utf-8"))
+    ajv.compileAsync(schema).then(function (validate){
+      return ajv.validate
+    })
+    //add keys
+    keys.push(filepath[1])
+  //})
+
+
 }
 
 //"http://json-schema.org/draft-07/schema" is added as meta schema by default
@@ -57,6 +94,8 @@ service.use(express.json())
 
 service.route('/validate/:tag')
   .post((req: Request, res: Response) => {
+    console.log(req.params.tag)
+    console.log(req.body)
     if(keys.includes(req.params.tag)){
       if(ajv.validate(req.params.tag, req.body)){
         //make sure the collection actually exists
@@ -78,7 +117,7 @@ service.route('/validate/:tag')
       }
     }else{
       //tag not found
-      //res.sendStatus(404)
+      res.sendStatus(404)
     }
   })
   .get((req: Request, res: Response) => {
