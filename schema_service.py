@@ -34,7 +34,7 @@ def gc_meta_type():
     return send_file("GC_META/GC_META_TYPE.schema.json")
 
 #test
-@app.route("/GC_META/test.schema.json", methods=["GET"])
+@app.route("/test", methods=["GET"])
 def gc_meta_test():
     return send_file("GC_META/test.schema.json")
 

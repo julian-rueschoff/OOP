@@ -37,14 +37,14 @@ const db_pw = "root";
 const db_addr = "http://localhost:8529";
 //filepath(id), key
 const schemas = [
-    ["GC_META/GC_META_APP.schema.json", "app"],
-    ["GC_META/GC_META_DATATYPE.schema.json", "datatype"],
-    ["GC_META/GC_META_PROP_SUBDATATYPE.schema.json", "prop_subdatatype"],
-    ["GC_META/GC_META_PROPERTY.schema.json", "property"],
-    ["GC_META/GC_META_SIMPLE_DATATYPE.schema.json", "simple_datatype"],
-    ["GC_META/GC_META_SUBDATATYPE.schema.json", "subdatatype"],
-    ["GC_META/GC_META_TYPE.schema.json", "type"],
-    ["GC_META/test.schema.json", "test"]
+    ["/GC_META_APP", "app"],
+    ["/GC_META_DATATYPE", "datatype"],
+    ["/GC_META_PROP_SUBDATATYPE", "prop_subdatatype"],
+    ["/GC_META_PROPERTY", "property"],
+    ["/GC_META_SIMPLE_DATATYPE", "simple_datatype"],
+    ["/GC_META_SUBDATATYPE", "subdatatype"],
+    ["/GC_META_TYPE", "type"],
+    ["/test", "test"]
 ];
 var keys = [];
 const ajv = (0, ajv_1.default)({
@@ -74,12 +74,16 @@ async function loadSchema(uri: string) {
 for (let filepath of schemas) {
     //$RefParser.dereference(filepath[0]).then((schema) => {
     //ajv.addSchema(JSON.parse(fs.readFileSync(filepath[0], "utf-8")), filepath[1])
-    var schema = JSON.parse(fs.readFileSync(filepath[0], "utf-8"));
-    ajv.compileAsync(schema).then(function (validate) {
-        return ajv.validate;
+    //var schema = JSON.parse(fs.readFileSync(filepath[0], "utf-8"))
+    (0, node_fetch_1.default)("http://localhost:5000" + filepath[0]).then((res) => {
+        return res.json();
+    }).then((schema) => {
+        ajv.compileAsync(schema).then(function (validate) {
+            return ajv.validate;
+        });
+        //add keys
+        keys.push(filepath[1]);
     });
-    //add keys
-    keys.push(filepath[1]);
     //})
 }
 //"http://json-schema.org/draft-07/schema" is added as meta schema by default
