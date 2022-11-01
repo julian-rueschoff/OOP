@@ -4,32 +4,32 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
-@app.route("/GC_META_SIMPLE_DATATYPE", methods=["GET"])
+@app.route("/simple_datatype", methods=["GET"])
 def gc_meta_simple_datatype():
     return send_file("GC_META/GC_META_SIMPLE_DATATYPE.schema.json")
 
-@app.route("/GC_META_APP", methods=["GET"])
+@app.route("/app", methods=["GET"])
 def gc_meta_app():
     return send_file("GC_META/GC_META_APP.schema.json")
 
-@app.route("/GC_META_DATATYPE", methods=["GET"])
+@app.route("/datatype", methods=["GET"])
 def gc_meta_datatype():
     return send_file("GC_META/GC_META_DATATYPE.schema.json")
 
-@app.route("/GC_META_SUBDATATYPE", methods=["GET"])
+@app.route("/subdatatype", methods=["GET"])
 def gc_meta_subdatatype():
     return send_file("GC_META/GC_META_SUBDATATYPE.schema.json")
 
-@app.route("/GC_META_PROP_SUBDATATYPE", methods=["GET"])
+@app.route("/prop_subdatatype", methods=["GET"])
 def gc_meta_prop_subdatatype():
     return send_file("GC_META/GC_META_PROP_SUBDATATYPE.schema.json")
 
 #property
-@app.route("/GC_META_PROPERTY", methods=["GET"])
+@app.route("/property", methods=["GET"])
 def gc_meta_property():
     return send_file("GC_META/GC_META_PROPERTY.schema.json")
 #type
-@app.route("/GC_META_TYPE", methods=["GET"])
+@app.route("/type", methods=["GET"])
 def gc_meta_type():
     return send_file("GC_META/GC_META_TYPE.schema.json")
 

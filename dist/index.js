@@ -35,16 +35,16 @@ const db_name = "oop";
 const db_user = "root";
 const db_pw = "root";
 const db_addr = "http://localhost:8529";
-//filepath(id), key
+//schema ids (need to be equal to url)
 const schemas = [
-    ["/GC_META_APP", "app"],
-    ["/GC_META_DATATYPE", "datatype"],
-    ["/GC_META_PROP_SUBDATATYPE", "prop_subdatatype"],
-    ["/GC_META_PROPERTY", "property"],
-    ["/GC_META_SIMPLE_DATATYPE", "simple_datatype"],
-    ["/GC_META_SUBDATATYPE", "subdatatype"],
-    ["/GC_META_TYPE", "type"],
-    ["/test", "test"]
+    "app",
+    "datatype",
+    "prop_subdatatype",
+    "property",
+    "simple_datatype",
+    "subdatatype",
+    "type",
+    "test"
 ];
 var keys = [];
 const ajv = (0, ajv_1.default)({
@@ -71,18 +71,18 @@ async function loadSchema(uri: string) {
 */
 //BUNDLE schemas ???
 //load schemas
-for (let filepath of schemas) {
+for (let s of schemas) {
     //$RefParser.dereference(filepath[0]).then((schema) => {
     //ajv.addSchema(JSON.parse(fs.readFileSync(filepath[0], "utf-8")), filepath[1])
     //var schema = JSON.parse(fs.readFileSync(filepath[0], "utf-8"))
-    (0, node_fetch_1.default)("http://localhost:5000" + filepath[0]).then((res) => {
+    (0, node_fetch_1.default)("http://localhost:5000/" + s).then((res) => {
         return res.json();
     }).then((schema) => {
         ajv.compileAsync(schema).then(function (validate) {
             return ajv.validate;
         });
         //add keys
-        keys.push(filepath[1]);
+        keys.push(s);
     });
     //})
 }
@@ -221,6 +221,7 @@ service.get('/reload', (req, res) => {
         keys.push(filepath[1]);
     }
 });
+//get /loaded_schemas -> gibt alle ids der geladenen schemas zurück
 service.listen(port, () => {
     console.log(`[server]: Server is running at https://localhost:${port}`);
 });

@@ -7,7 +7,7 @@
     "version": "1.0",
     "properties": {
         "name": {"const": "t"},
-        "r": {"$ref": "http://localhost:5000/GC_META_APP"}
+        "r": {"$ref": "http://localhost:5000/app"}
     },
     "required": ["name"]
 }
