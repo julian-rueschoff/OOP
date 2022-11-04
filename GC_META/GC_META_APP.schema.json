@@ -5,7 +5,7 @@
     "description": "",
     "type": "object",
     "version": "1.0",
-    "oneOf": [
+    "anyOf": [
         {"properties": {"name": {"const": "basis"}}},
         {"properties": {"name": {"const": "sw"}}}
     ],

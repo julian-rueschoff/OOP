@@ -1,8 +1,6 @@
 import express, { Express, Request, response, Response } from 'express';
 import { Database } from 'arangojs';
 import Ajv from 'ajv';
-import * as fs from 'fs';
-import $RefParser from "@apidevtools/json-schema-ref-parser";
 import fetch from 'node-fetch';
 
 
@@ -37,24 +35,8 @@ const ajv = Ajv({
   logger: false
 })
 
-/*
-ajv.compileAsync(schema).then(function validate(schema: string | boolean | object, data: any) {
-  return ajv.validate(schema, data)
-})
-async function loadSchema(uri: string) {
-  const res = await request.json(uri)
-  if (res.statusCode >= 400) throw new Error("Loading error" + res.statusCode)
-  return res.body
-}
-*/
-
-//BUNDLE schemas ???
-
 //load schemas
 for(let s of schemas){
-  //$RefParser.dereference(filepath[0]).then((schema) => {
-    //ajv.addSchema(JSON.parse(fs.readFileSync(filepath[0], "utf-8")), filepath[1])
-    //var schema = JSON.parse(fs.readFileSync(filepath[0], "utf-8"))
     fetch("http://localhost:5000/"+s).then((res) => {
       return res.json()
     }).then((schema) => {
@@ -64,9 +46,6 @@ for(let s of schemas){
       //add keys
       keys.push(s)
     })
-  //})
-
-
 }
 
 //"http://json-schema.org/draft-07/schema" is added as meta schema by default
@@ -116,6 +95,7 @@ service.route('/validate/:tag')
         //db.collection(req.params.tag).save(req.body)
         res.sendStatus(200)
       }else{
+        console.log(ajv.errorsText())
         //validation failed
         res.sendStatus(409)
       }
@@ -198,16 +178,23 @@ service.route('/validate/:tag')
 service.get('/reload', (req: Request, res: Response) => {
     ajv.removeSchema()
     keys = []
-    for(let filepath of schemas){
-      ajv.addSchema(JSON.parse(fs.readFileSync(filepath[0], "utf-8")), filepath[1])
-      keys.push(filepath[1])
+    for(let s of schemas){
+      fetch("http://localhost:5000/"+s).then((res) => {
+        return res.json()
+      }).then((schema) => {
+        ajv.compileAsync(schema).then(function (validate){
+          return ajv.validate
+        })
+        //add keys
+        keys.push(s)
+      })
     }
   })
 
 //get /loaded_schemas -> gibt alle ids der geladenen schemas zurück
 
 service.listen(port, () => {
-  console.log(`[server]: Server is running at https://localhost:${port}`);
+  console.log(`running at https://localhost:${port}`);
 });
 
 

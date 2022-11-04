@@ -5,7 +5,7 @@
     "description": "",
     "type": "object",
     "version": "1.0",
-    "oneOf": [
+    "anyOf": [
         {"properties": {"name": {"const": "geometry"}, "position": {"const": 2}, "active": {"const": 1}}},
         {"properties": {"name": {"const": "join"}, "position": {"const": 4}, "active": {"const": 1}}},
         {"properties": {"name": {"const": "logical"}, "position": {"const": 3}, "active": {"const": 1}}},

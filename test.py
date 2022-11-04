@@ -1,9 +1,8 @@
 
 import requests
-
-
-
-url = 'http://localhost:8000/validate/test'
+from jsonschema import validate
+from jsonschema import ValidationError
+import json
 
 myobj = {
     "$schema": "http://json-schema.org/draft-07/schema",
@@ -20,26 +19,104 @@ myobj = {
     "required": ["name"]
 }
 
-myobj2 = { 
-    "name": "string",
+subdatatype = { 
     "datatype": { "name": "physical" },
-    "simple_datatype": { "name": "string" } 
+    "name": "string",
+    "simple_datatype": { "name": "string" }
  }
 
-myobj3 = {
-    "name": "t",
-    "r": { "name": "sw" }
+datatype = {
+    "name": "physical"
 }
 
-x = requests.post(url, json=myobj3)
+simple_datatype = {
+    "name": "string"
+}
+
+property = {
+    "name": "class_generate_reference_join", 
+    "simple_datatype": {"name": "integer"}, 
+    "type": {"name": "class"}
+}
+
+prop_subdatatype = {
+  "prop": {
+    "name": "field_datatype",
+    "simple_datatype": {
+      "name": "string"
+    },
+    "type": {
+      "name": "visibility"
+    },
+    "description": "cillum tempor sed proident",
+    "for_import": 0,
+    "internal": 0,
+    "is_reference": 0,
+    "active": 1,
+    "for_export": 1,
+    "position": 25
+  },
+  "subdatatype": {
+    "datatype": {
+      "name": "join",
+      "active": 1
+    },
+    "name": "insert",
+    "simple_datatype": {
+      "name": "date"
+    }
+  },
+  "app": {
+    "name": "basis"
+  },
+  "datatype": {
+    "name": "geometry",
+    "position": 2,
+    "active": 1
+  }
+}
+
+
+app = {
+    "name": "sw"
+}
+
+
+url = 'http://localhost:8000/validate/prop_subdatatype'
+x = requests.post(url, json=prop_subdatatype)
 print(x.content)
-x = requests.get(url)
+url = 'http://localhost:8000/validate/subdatatype'
+x = requests.post(url, json=subdatatype)
 print(x.content)
+#x = requests.get(url)
+#print(x.content)
 #x = requests.put(url, json=myobj)
 #print(x.content)
 #x = requests.get(url)
 #print(x.content)
 #x = requests.post(url, json=myobj2)
 #print(x.content)
+with open("GC_META/GC_META_SUBDATATYPE.schema.json", "r") as file:
+    schema_subdatatype = json.loads(file.read())
+file.close()
+with open("GC_META/GC_META_DATATYPE.schema.json", "r") as file:
+    schema_datatype = json.loads(file.read())
+file.close()
+with open("GC_META/GC_META_SIMPLE_DATATYPE.schema.json", "r") as file:
+    schema_simple_datatype = json.loads(file.read())
+file.close()
+with open("GC_META/GC_META_PROPERTY.schema.json", "r") as file:
+    schema_property = json.loads(file.read())
+file.close()
+with open("GC_META/GC_META_PROP_SUBDATATYPE.schema.json", "r") as file:
+    schema_prop_subdatatype = json.loads(file.read())
+file.close()
+with open("tmp", "w") as file:
+    try: 
+        validate(instance=prop_subdatatype, schema=schema_prop_subdatatype)
+    except ValidationError as v:
+        file.write(str(v))
 
 
+
+#subdatatype
