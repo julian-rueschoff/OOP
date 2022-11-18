@@ -9,3 +9,9 @@ services:
       - 8529:8529
     volumes:
       - /var/lib/arangodb:/var/lib/arangodb
+  schema_service:
+    build: 
+      context: schema_service/
+      dockerfile: Dockerfile
+    ports: 
+     - 5000:5000

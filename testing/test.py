@@ -78,24 +78,22 @@ prop_subdatatype = {
 
 
 app = {
-    "name": "sw"
+    "name": "test"
 }
 
 
-url = 'http://localhost:8000/validate/prop_subdatatype'
-x = requests.post(url, json=prop_subdatatype)
+url = 'http://localhost:8000/validate/app'
+x = requests.post(url, json=app)#409
 print(x.content)
-url = 'http://localhost:8000/validate/subdatatype'
-x = requests.post(url, json=subdatatype)
+x = requests.get(url)#200
 print(x.content)
-#x = requests.get(url)
-#print(x.content)
-#x = requests.put(url, json=myobj)
-#print(x.content)
-#x = requests.get(url)
-#print(x.content)
-#x = requests.post(url, json=myobj2)
-#print(x.content)
+x = requests.put(url, json=myobj)#200
+print(x.content)
+x = requests.get(url)#200
+print(x.content)
+x = requests.post(url, json=app)#200
+print(x.content)
+'''
 with open("GC_META/GC_META_SUBDATATYPE.schema.json", "r") as file:
     schema_subdatatype = json.loads(file.read())
 file.close()
@@ -116,7 +114,7 @@ with open("tmp", "w") as file:
         validate(instance=prop_subdatatype, schema=schema_prop_subdatatype)
     except ValidationError as v:
         file.write(str(v))
-
+'''
 
 
 #subdatatype

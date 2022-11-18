@@ -1,3 +1,0 @@
-class datatype {
-    name!: string;
-}

@@ -1,3 +1,0 @@
-class app {
-    name!: string;
-}

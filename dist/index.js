@@ -7,10 +7,34 @@ const express_1 = __importDefault(require("express"));
 const arangojs_1 = require("arangojs");
 const ajv_1 = __importDefault(require("ajv"));
 const node_fetch_1 = __importDefault(require("node-fetch"));
+const json_schema_faker_1 = require("json-schema-faker");
+const swaggerJSDoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
+const swaggerDefinition = {
+    openapi: '3.0.0',
+    info: {
+        title: 'REST API for schema validation of OOP',
+        version: '1.0.0',
+        description: ''
+    },
+    servers: [
+        {
+            url: 'http://localhost:8000',
+            description: 'Development server',
+        },
+    ]
+};
+const options = {
+    swaggerDefinition,
+    // Paths to files containing OpenAPI definitions
+    apis: ['index.ts'],
+};
+const swaggerSpec = swaggerJSDoc(options);
 const db_name = "oop";
 const db_user = "root";
 const db_pw = "root";
 const db_addr = "http://localhost:8529";
+const schema_service_addr = "http://localhost:5000/";
 //schema ids (need to be equal to url)
 const schemas = [
     "app",
@@ -37,7 +61,7 @@ const ajv = (0, ajv_1.default)({
 });
 //load schemas
 for (let s of schemas) {
-    (0, node_fetch_1.default)("http://localhost:5000/" + s).then((res) => {
+    (0, node_fetch_1.default)(schema_service_addr + s).then((res) => {
         return res.json();
     }).then((schema) => {
         ajv.compileAsync(schema).then(function (validate) {
@@ -69,12 +93,79 @@ var db = sys_db.database(db_name);
 //start REST service
 const service = (0, express_1.default)();
 const port = 8000;
-const router = express_1.default.Router();
 service.use(express_1.default.json());
+service.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+/**
+ * @swagger
+ * /validate/{schema_id}:
+ *  get:
+ *    summary: Returns the loaded schema of the specified id
+ *    parameters:
+ *      - name: schema_id
+ *        in: string
+ *        required: true
+ *        description: An id of a schema
+ *    description: Returns the schema if the schema with the id of schema_id is loaded.
+ *    responses:
+ *      '200':
+ *        description: Returned a JSON schema with the id of schema_id
+ *      '404':
+ *        description: A JSON schema with the id of schema_id is not found
+ *  post:
+ *    summary: Validates the send object and saves it in the db
+ *    description: Validates a json object send in the body of a request against the schema with the id of schema_id.
+ *    parameters:
+ *      - name: schema_id
+ *        in: string
+ *        required: true
+ *        description: An id of a schema
+ *    requestBody:
+ *        required: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *            example:
+  *             prop:
+  *               name: field_datatype
+  *               simple_datatype:
+  *                 name: string
+  *               type:
+  *                 name: visibility
+  *               description: cillum tempor sed proident
+  *               for_import: 0
+  *               internal: 0
+  *               is_reference: 0
+  *               active: 1
+  *               for_export: 1
+  *               position: 25
+  *             subdatatype:
+  *               datatype:
+  *                 name: join
+  *                 active: 1
+  *               name: insert
+  *               simple_datatype:
+  *                 name: date
+  *             app:
+  *               name: basis
+  *             datatype:
+  *               name: geometry
+  *               position: 2
+  *               active: 1
+ *    responses:
+ *      '200':
+ *        description: The send object was sucessfully validated against the schema and was saved in the db
+ *      '409':
+ *        description: The send object did not validate against the schema
+ *      '404':
+ *        description: The schema with the id of schema_id was not found
+ *  put:
+ *    summary: Loads a new schema
+ *  delete:
+ *    summary: Deletes a loaded schema
+ */
 service.route('/validate/:tag')
     .post((req, res) => {
-    console.log(req.params.tag);
-    console.log(req.body);
     if (keys.includes(req.params.tag)) {
         if (ajv.validate(req.params.tag, req.body)) {
             //make sure the collection actually exists
@@ -88,8 +179,6 @@ service.route('/validate/:tag')
                     db.collection(req.params.tag).save(req.body);
                 }
             });
-            //and put the object in it
-            //db.collection(req.params.tag).save(req.body)
             res.sendStatus(200);
         }
         else {
@@ -106,7 +195,7 @@ service.route('/validate/:tag')
     .get((req, res) => {
     var _a;
     if (keys.includes(req.params.tag)) {
-        res.send((_a = ajv.getSchema(req.params.tag)) === null || _a === void 0 ? void 0 : _a.schema);
+        res.status(200).send((_a = ajv.getSchema(req.params.tag)) === null || _a === void 0 ? void 0 : _a.schema);
     }
     else {
         //tag not found
@@ -179,7 +268,7 @@ service.get('/reload', (req, res) => {
     ajv.removeSchema();
     keys = [];
     for (let s of schemas) {
-        (0, node_fetch_1.default)("http://localhost:5000/" + s).then((res) => {
+        (0, node_fetch_1.default)(schema_service_addr + s).then((res) => {
             return res.json();
         }).then((schema) => {
             ajv.compileAsync(schema).then(function (validate) {
@@ -190,7 +279,27 @@ service.get('/reload', (req, res) => {
         });
     }
 });
-//get /loaded_schemas -> gibt alle ids der geladenen schemas zurück
+service.get("/example/:tag", (req, res) => {
+    var _a;
+    if (keys.includes(req.params.tag)) {
+        var schema = JSON.parse(JSON.stringify((_a = ajv.getSchema(req.params.tag)) === null || _a === void 0 ? void 0 : _a.schema));
+        json_schema_faker_1.JSONSchemaFaker.resolve(schema).then((o) => {
+            res.status(200).send(o);
+        });
+    }
+    else {
+        res.sendStatus(404);
+    }
+});
+/**
+ * @swagger
+ * /schemas:
+ *   get:
+ *     summary: Returns all loaded schema ids
+ */
+service.get('/schemas', (req, res) => {
+    res.status(200).send(keys);
+});
 service.listen(port, () => {
     console.log(`running at https://localhost:${port}`);
 });
