@@ -5,9 +5,13 @@
     "description": "",
     "type": "object",
     "version": "1.0",
+    "$defs": {
+        "$ref": "http://localhost:5000/"
+    },
     "properties": {
         "name": {"const": "t"},
-        "r": {"$ref": "http://localhost:5000/app"}
+        "r": {"$ref": "$defs"}
     },
-    "required": ["name"]
+    "required": ["name", "r"]
+
 }

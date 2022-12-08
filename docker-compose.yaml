@@ -9,9 +9,20 @@ services:
       - 8529:8529
     volumes:
       - /var/lib/arangodb:/var/lib/arangodb
+
   schema_service:
     build: 
       context: schema_service/
       dockerfile: Dockerfile
     ports: 
      - 5000:5000
+
+  oop_schema_validation_service:
+    build:
+      context: oop_schema_validation_service/
+      dockerfile: Dockerfile
+    ports: 
+     - 8000:8000
+    depends_on:
+      - arangodb
+      - schema_service
