@@ -8,6 +8,7 @@ const arangojs_1 = require("arangojs");
 const ajv_1 = __importDefault(require("ajv"));
 const node_fetch_1 = __importDefault(require("node-fetch"));
 const json_schema_faker_1 = require("json-schema-faker");
+require("ajv-keywords");
 const swaggerJSDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDefinition = {
@@ -27,7 +28,7 @@ const swaggerDefinition = {
 const options = {
     swaggerDefinition,
     // Paths to files containing OpenAPI definitions
-    apis: ['index.ts'],
+    apis: ['swagger.yaml'],
 };
 const swaggerSpec = swaggerJSDoc(options);
 const db_name = "oop";
@@ -47,7 +48,7 @@ const schemas = [
     "test"
 ];
 var keys = [];
-const ajv = (0, ajv_1.default)({
+const ajv = new ajv_1.default({
     loadSchema: function (uri) {
         return new Promise((resolve, reject) => {
             (0, node_fetch_1.default)(uri).then((res) => {
@@ -95,75 +96,6 @@ const service = (0, express_1.default)();
 const port = 8000;
 service.use(express_1.default.json());
 service.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-/**
- * @swagger
- * /validate/{schema_id}:
- *  get:
- *    summary: Returns the loaded schema of the specified id
- *    parameters:
- *      - name: schema_id
- *        in: string
- *        required: true
- *        description: An id of a schema
- *    description: Returns the schema if the schema with the id of schema_id is loaded.
- *    responses:
- *      '200':
- *        description: Returned a JSON schema with the id of schema_id
- *      '404':
- *        description: A JSON schema with the id of schema_id is not found
- *  post:
- *    summary: Validates the send object and saves it in the db
- *    description: Validates a json object send in the body of a request against the schema with the id of schema_id.
- *    parameters:
- *      - name: schema_id
- *        in: string
- *        required: true
- *        description: An id of a schema
- *    requestBody:
- *        required: true
- *        content:
- *          application/json:
- *            schema:
- *              type: object
- *            example:
-  *             prop:
-  *               name: field_datatype
-  *               simple_datatype:
-  *                 name: string
-  *               type:
-  *                 name: visibility
-  *               description: cillum tempor sed proident
-  *               for_import: 0
-  *               internal: 0
-  *               is_reference: 0
-  *               active: 1
-  *               for_export: 1
-  *               position: 25
-  *             subdatatype:
-  *               datatype:
-  *                 name: join
-  *                 active: 1
-  *               name: insert
-  *               simple_datatype:
-  *                 name: date
-  *             app:
-  *               name: basis
-  *             datatype:
-  *               name: geometry
-  *               position: 2
-  *               active: 1
- *    responses:
- *      '200':
- *        description: The send object was sucessfully validated against the schema and was saved in the db
- *      '409':
- *        description: The send object did not validate against the schema
- *      '404':
- *        description: The schema with the id of schema_id was not found
- *  put:
- *    summary: Loads a new schema
- *  delete:
- *    summary: Deletes a loaded schema
- */
 service.route('/validate/:tag')
     .post((req, res) => {
     if (keys.includes(req.params.tag)) {
@@ -278,6 +210,7 @@ service.get('/reload', (req, res) => {
             keys.push(s);
         });
     }
+    res.sendStatus(200);
 });
 service.get("/example/:tag", (req, res) => {
     var _a;
@@ -291,12 +224,6 @@ service.get("/example/:tag", (req, res) => {
         res.sendStatus(404);
     }
 });
-/**
- * @swagger
- * /schemas:
- *   get:
- *     summary: Returns all loaded schema ids
- */
 service.get('/schemas', (req, res) => {
     res.status(200).send(keys);
 });

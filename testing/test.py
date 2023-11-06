@@ -82,18 +82,36 @@ app = {
     "name": "test"
 }
 
+url = 'http://localhost:8000/validate/property'
+print(requests.post(url, json={
+    "name": "sub_page_2",
+    "simple_datatype": {
+        "name": "float"
+    },
+    "type": {
+        "name": "visibility"
+    },
+    "for_import": 0,
+    "description": "nulla",
+    "internal": 0,
+    "position": None,
+    "active": 1,
+    "is_reference": 0,
+    "for_export": 0
+}))
 
-url = 'http://localhost:8000/validate/app'
-x = requests.post(url, json=app)#409
-print(x.status_code)
-x = requests.get(url)#200
-print(x.status_code)
-x = requests.put(url, json=myobj)#200
-print(x.status_code)
-x = requests.get(url)#200
-print(x.status_code)
-x = requests.post(url, json=app)#200
-print(x.status_code)
+
+#url = 'http://localhost:8000/validate/app'
+#x = requests.post(url, json=app)#409
+#print(x.status_code)
+#x = requests.get(url)#200
+#print(x.status_code)
+#x = requests.put(url, json=myobj)#200
+#print(x.status_code)
+#x = requests.get(url)#200
+#print(x.status_code)
+#x = requests.post(url, json=app)#200
+#print(x.status_code)
 '''
 with open("GC_META/GC_META_SUBDATATYPE.schema.json", "r") as file:
     schema_subdatatype = json.loads(file.read())

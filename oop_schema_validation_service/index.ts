@@ -4,6 +4,7 @@ import Ajv from 'ajv';
 import fetch from 'node-fetch';
 import { JSONSchemaFaker, Schema } from 'json-schema-faker';
 
+require("ajv-keywords");
 const swaggerJSDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDefinition = {
@@ -47,7 +48,7 @@ const schemas = [
 ]
 
 var keys: string[] = []
-const ajv = Ajv({
+const ajv = new Ajv({
   loadSchema: function (uri) {
     return new Promise((resolve, reject) => {
       fetch(uri).then((res) => {
