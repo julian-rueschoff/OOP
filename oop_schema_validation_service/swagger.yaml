@@ -1,0 +1,144 @@
+
+/validate/{schema_id}:
+  get:
+    summary: Returns the loaded schema of the specified id
+    parameters: 
+      - name: schema_id
+        in: string
+        required: true
+        description: An id of a schema 
+    description: Returns the schema if the schema with the id of schema_id is loaded.
+    responses: 
+      '200': 
+        description: Returned a JSON schema with the id of schema_id
+      '404':
+        description: A JSON schema with the id of schema_id is not found
+  post:
+    summary: Validates the send object and saves it in the db
+    description: Validates a json object send in the body of a request against the schema with the id of schema_id.
+    parameters: 
+      - name: schema_id
+        in: string
+        required: true
+        description: An id of a schema 
+    requestBody:
+        required: true
+        content:
+          application/json: 
+            schema:
+              type: object
+            example:
+              prop: 
+                name: field_datatype
+                simple_datatype: 
+                  name: string
+                type: 
+                  name: visibility
+                description: cillum tempor sed proident
+                for_import: 0
+                internal: 0
+                is_reference: 0
+                active: 1
+                for_export: 1
+                position: 25
+              subdatatype: 
+                datatype: 
+                  name: join
+                  active: 1
+                name: insert
+                simple_datatype: 
+                  name: date
+              app: 
+                name: basis
+              datatype: 
+                name: geometry
+                position: 2
+                active: 1
+    responses:
+      '200':
+        description: The send object was sucessfully validated against the schema and was saved in the db
+      '409':
+        description: The send object did not validate against the schema 
+      '404':
+        description: The schema with the id of schema_id was not found
+  put:
+    summary: Loads a new schema 
+    description: A schema can be added to the validator by uploading it with its id as parameter
+    parameters: 
+    - name: schema_id
+      in: string
+      required: true
+      description: The id the uploaded schema shall have
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema: 
+            type: object
+            example:
+              $schema: 'http://json-schema.org/draft-07/schema'
+              $id: app
+              title: GC_META_APP
+              description: ''
+              type: object
+              version: '1.0'
+              oneOf:
+                - properties:
+                    name:
+                      const: basis
+                - properties:
+                    name:
+                      const: sw
+                - properties:
+                    name:
+                      const: test
+              required:
+                - name
+    responses:
+      '200': 
+        description: Successfully loaded the schema 
+      '409': 
+        description: Schema did not validate
+  delete:
+    summary: Deletes a loaded schema
+    description: Deletes the loaded schema with the given id, if it exists
+    parameters: 
+    - name: schema_id
+      in: string
+      required: true
+      description: The id the of the schema to be deleted
+    responses:
+      '200': 
+        description: Successfully deleted schema  
+      '404': 
+        description: Could not find schema to be deleted
+
+/schemas:
+  get:
+    summary: Returns all loaded schema ids
+    responses:
+      '200': 
+        description: Successfully send all loaded schema ids
+
+/reload:
+  get:
+    summary: Reloads all default schemas
+    description: Deletes all loaded schemas then loads default schemas
+    responses:
+      '200': 
+        description: successfully reloaded all schemas
+
+/example/{schema_id}:
+  get:
+    summary: Sends an example object that validates against the given schema
+    description: An example object is generated, that validates against the given schema
+    parameters:
+    - name: schema_id
+      in: string
+      required: true
+      description: The id of the schema, that the example validates against
+    responses:
+      '200': 
+        description: successfully generated example
+      '404': 
+        description: could not find schema to generate example for

@@ -19,7 +19,7 @@ const swaggerDefinition = {
     },
     servers: [
         {
-            url: 'http://localhost:8000',
+            url: 'http://0.0.0.0:8000',
             description: 'Development server',
         },
     ]
@@ -33,8 +33,8 @@ const swaggerSpec = swaggerJSDoc(options);
 const db_name = "oop";
 const db_user = "root";
 const db_pw = "root";
-const db_addr = "http://localhost:8529"; //"http://localhost:8529"
-const schema_service_addr = "http://localhost:5000/"; //"http://localhost:5000/"
+const db_addr = "http://arangodb:8529"; //"http://localhost:8529"
+const schema_service_addr = "http://schema_service:5000/"; //"http://localhost:5000/"
 //schema ids (need to be equal to url)
 const schemas = [
     "app",

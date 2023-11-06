@@ -1,5 +1,6 @@
 
 import requests
+from requests import Response
 from jsonschema import validate
 from jsonschema import ValidationError
 import json
@@ -84,15 +85,15 @@ app = {
 
 url = 'http://localhost:8000/validate/app'
 x = requests.post(url, json=app)#409
-print(x.content)
+print(x.status_code)
 x = requests.get(url)#200
-print(x.content)
+print(x.status_code)
 x = requests.put(url, json=myobj)#200
-print(x.content)
+print(x.status_code)
 x = requests.get(url)#200
-print(x.content)
+print(x.status_code)
 x = requests.post(url, json=app)#200
-print(x.content)
+print(x.status_code)
 '''
 with open("GC_META/GC_META_SUBDATATYPE.schema.json", "r") as file:
     schema_subdatatype = json.loads(file.read())
