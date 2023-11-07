@@ -130,7 +130,7 @@
 
 /example/{schema_id}:
   get:
-    summary: Sends an example object that validates against the given schema
+    summary: Sends an example object that validates against the given schema. Does not yet send an object that actually validates against the schema that it is generated from
     description: An example object is generated, that validates against the given schema
     parameters:
     - name: schema_id

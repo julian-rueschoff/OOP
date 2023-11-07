@@ -227,6 +227,10 @@ service.get("/example/:tag", (req, res) => {
 service.get('/schemas', (req, res) => {
     res.status(200).send(keys);
 });
+service.get('/debug', (req, res) => {
+    console.log(ajv)
+    res.sendStatus(200)
+});
 service.listen(port, () => {
     console.log(`running at https://localhost:${port}`);
 });

@@ -4,7 +4,6 @@
     "title": "GC_META_TYPE",
     "description": "",
     "type": "object",
-    "version": "1.0",
     "anyOf": [
         {"properties": {"name": {"const": "join"}}},
         {"properties": {"name": {"const": "attribute"}}},

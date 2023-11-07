@@ -4,7 +4,6 @@
     "title": "GC_META_SUBDATATYPE",
     "description": "",
     "type": "object",
-    "version": "1.0",
     "anyOf": [
         {"properties": {"datatype": {"$ref": "http://schema_service:5000/datatype", "type": "object", "properties": {"name": {"const": "physical"}}}, "name": {"const": "string"}, "simple_datatype": {"$ref": "http://schema_service:5000/simple_datatype", "type": "object", "properties": {"name": {"const": "string"}}}, "is_default": {"const": 1}, "position": {"const": 1}, "active": {"const": 1}}},
         {"properties": {"datatype": {"$ref": "http://schema_service:5000/datatype", "type": "object", "properties": {"name": {"const": "physical"}}}, "name": {"const": "integer"}, "simple_datatype": {"$ref": "http://schema_service:5000/simple_datatype", "type": "object", "properties": {"name": {"const": "integer"}}}, "is_default": {"const": 0}, "position": {"const": 2}, "active": {"const": 1}}},

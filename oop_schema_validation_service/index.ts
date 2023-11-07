@@ -4,7 +4,6 @@ import Ajv from 'ajv';
 import fetch from 'node-fetch';
 import { JSONSchemaFaker, Schema } from 'json-schema-faker';
 
-require("ajv-keywords");
 const swaggerJSDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDefinition = {
@@ -36,6 +35,7 @@ const db_addr = "http://arangodb:8529" //"http://localhost:8529"
 const schema_service_addr = "http://schema_service:5000/" //"http://localhost:5000/"
 
 //schema ids (need to be equal to url)
+//TODO REST request to the schema server
 const schemas = [
   "app",
   "datatype",
@@ -49,7 +49,11 @@ const schemas = [
 
 var keys: string[] = []
 const ajv = new Ajv({
-  loadSchema: function (uri) {
+  loadSchema: loadSchema,
+  logger: false,
+  strict: false
+})
+  /*loadSchema: function (uri) {
     return new Promise((resolve, reject) => {
       fetch(uri).then((res) => {
         return res.json()
@@ -59,7 +63,14 @@ const ajv = new Ajv({
     });
   },
   logger: false
-})
+})*/
+
+async function loadSchema(uri: string){
+  const res = await fetch(uri)
+  if (res.status >= 400) throw new Error("Loading error: " + res.status)
+  return res.body
+}
+//require("ajv-keywords") (ajv);
 
 //load schemas
 for(let s of schemas){
@@ -68,9 +79,13 @@ for(let s of schemas){
     }).then((schema) => {
       ajv.compileAsync(schema).then(function (validate){
         return ajv.validate
+      }).catch((err) => {
+        console.log(err)
       })
       //add keys
       keys.push(s)
+    }).catch((err) => {
+      console.log(err)
     })
 }
 
@@ -217,6 +232,7 @@ service.get('/reload', (req: Request, res: Response) => {
   service.get("/example/:tag", (req: Request, res: Response) => {
       if(keys.includes(req.params.tag)){
         var schema = JSON.parse(JSON.stringify(ajv.getSchema(req.params.tag)?.schema))
+        console.log(schema)
         JSONSchemaFaker.resolve(schema).then((o) => {
           res.status(200).send(o)  
         })
@@ -229,9 +245,14 @@ service.get('/schemas', (req: Request, res: Response) => {
   res.status(200).send(keys)
 })
 
+service.get('/debug', (req, res) => {
+  console.log(ajv)
+  res.sendStatus(200)
+})
+
 service.listen(port, () => {
   console.log(`running at https://localhost:${port}`);
-});
+})
 
 
 

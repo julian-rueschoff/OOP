@@ -4,7 +4,6 @@
     "title": "GC_META_PROP_SUBDATATYPE",
     "description": "",
     "type": "object",
-    "version": "1.0",
     "anyOf": [
         {"properties": {"prop": {"$ref": "http://schema_service:5000/property", "type": "object", "properties": {"name": {"const": "field_float_precision"}}}, "subdatatype": {"$ref": "http://schema_service:5000/subdatatype", "type": "object", "properties": {"name": {"const": "float"}}}, "app": {"$ref": "http://schema_service:5000/app", "type": "object", "properties": {"name": {"const": "sw"}}}, "datatype": {"$ref": "http://schema_service:5000/datatype", "type": "object", "properties": {"name": {"const": "physical"}}}, "default_string_value": {"const": null}, "default_integer_value": {"const": 3}, "default_date_value": {"const": null}, "default_float_value": {"const": null}}},
         {"properties": {"prop": {"$ref": "http://schema_service:5000/property", "type": "object", "properties": {"name": {"const": "sub_page_1"}}}, "subdatatype": {"$ref": "http://schema_service:5000/subdatatype", "type": "object", "properties": {"name": {"const": "string"}}}, "app": {"$ref": "http://schema_service:5000/app", "type": "object", "properties": {"name": {"const": "sw"}}}, "datatype": {"$ref": "http://schema_service:5000/datatype", "type": "object", "properties": {"name": {"const": "physical"}}}, "default_string_value": {"const": null}, "default_integer_value": {"const": 1}, "default_date_value": {"const": null}, "default_float_value": {"const": null}}},

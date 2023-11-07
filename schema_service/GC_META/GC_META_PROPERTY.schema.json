@@ -5,7 +5,6 @@
     "title": "GC_META_PROPERTY",
     "description": "",
     "type": "object",
-    "version": "1.0",
     "anyOf": [
         {"properties": {"name": {"const": "class_generate_reference_join"},"simple_datatype": {"$ref": "http://schema_service:5000/simple_datatype","properties": {"name": {"const": "integer"}}},"type": {"$ref": "http://schema_service:5000/type","properties": {"name": {"const": "class"}}},"internal": {"const": 0},"position": {"const": 30},"description": {"type": "string"},"active": {"const": 1},"for_export": {"const": 1},"for_import": {"const": 1},"is_reference": {"const": 0}}},
         {"properties": {"name": {"const": "class_theme"},"simple_datatype": {"$ref": "http://schema_service:5000/simple_datatype","properties": {"name": {"const": "string"}}},"type": {"$ref": "http://schema_service:5000/type","properties": {"name": {"const": "class"}}},"internal": {"const": 0},"position": {"const": 60},"description": {"type": "string"},"active": {"const": 1},"for_export": {"const": 1},"for_import": {"const": 0},"is_reference": {"const": 0}}},

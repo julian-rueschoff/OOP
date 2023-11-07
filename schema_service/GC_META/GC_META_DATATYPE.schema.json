@@ -4,7 +4,6 @@
     "title": "GC_META_DATATYPE",
     "description": "",
     "type": "object",
-    "version": "1.0",
     "anyOf": [
         {"properties": {"name": {"const": "geometry"}, "position": {"const": 2}, "active": {"const": 1}}},
         {"properties": {"name": {"const": "join"}, "position": {"const": 4}, "active": {"const": 1}}},
